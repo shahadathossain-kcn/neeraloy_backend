@@ -8,11 +8,15 @@ jobs:
 
     env:
       DJANGO_SETTINGS_MODULE: neeraloy_backend.settings
-      
+
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python
         uses: actions/setup-python@v4
+      - name: Set PYTHONPATH
+        run: |
+          echo "PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
+          
         with:
           python-version: '3.9'
       - run: pip install flake8 pytest django djangorestframework
