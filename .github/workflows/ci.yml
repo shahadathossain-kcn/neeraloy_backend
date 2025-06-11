@@ -1,18 +1,17 @@
-name: Run Tests
-on: [push]
+name: Frontend CI
+
+on: [push, pull_request]
+
 jobs:
-  test:
+  lint-and-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v3
+      - name: Set up Node
+        uses: actions/setup-node@v3
         with:
-          python-version: '3.9'
-      - name: Install dependencies
-        run: pip install pytest
-      - name: Run tests
-        working-directory: ./tests
-        env:
-          PYTHONPATH: ${{ github.workspace }}
-        run: pytest --maxfail=1 --disable-warnings -v
+          node-version: '16'
+      - run: npm ci
+      - run: npm run lint   # assumes you add ESLint script
+      - run: npm test       # assumes a basic test exists
+
