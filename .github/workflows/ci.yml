@@ -1,4 +1,4 @@
-name: Frontend CI
+name: Backend CI
 
 on: [push, pull_request]
 
@@ -7,11 +7,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Node
-        uses: actions/setup-node@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          node-version: '16'
-      - run: npm ci
-      - run: npm run lint   # assumes you add ESLint script
-      - run: npm test       # assumes a basic test exists
+          python-version: '3.9'
+      - run: pip install flake8 pytest django djangorestframework
+      - run: flake8 .
+      - run: pytest --maxfail=1 --disable-warnings -q
+
 
